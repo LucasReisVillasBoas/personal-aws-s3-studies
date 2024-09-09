@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
 
 @Injectable()
-export class UploadService {
+export class FileService {
   private readonly s3Client = new S3Client({
     region: this.configService.getOrThrow('AWS_S3_REGION'),
   });

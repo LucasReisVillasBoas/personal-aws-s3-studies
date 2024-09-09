@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UploadModule } from './upload/upload.module';
+import { FileModule } from './file/file.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UploadModule, ConfigModule.forRoot({ isGlobal: true })],
+  imports: [FileModule, ConfigModule.forRoot({ isGlobal: true })],
 })
 export class AppModule {}

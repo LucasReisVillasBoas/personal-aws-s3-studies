@@ -9,12 +9,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadService } from './upload.service';
+import { FileService } from './file.service';
 import { Response } from 'express';
 
-@Controller('upload')
-export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+@Controller('file')
+export class FileController {
+  constructor(private readonly fileService: FileService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
@@ -29,7 +29,7 @@ export class UploadController {
     )
     file: Express.Multer.File,
   ) {
-    await this.uploadService.upload(file.originalname, file.buffer);
+    await this.fileService.upload(file.originalname, file.buffer);
   }
 
   @Get(':fileName')
@@ -37,7 +37,7 @@ export class UploadController {
     @Param('fileName') fileName: string,
     @Res() res: Response,
   ) {
-    const fileStream = await this.uploadService.download(fileName);
+    const fileStream = await this.fileService.download(fileName);
     res.set({
       'Content-Type': 'application/octet-stream',
       'Content-Disposition': `attachment; filename="${fileName}"`,
