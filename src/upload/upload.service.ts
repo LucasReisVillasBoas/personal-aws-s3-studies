@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+  GetObjectCommandOutput,
+} from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
+import { Readable } from 'stream';
 
 @Injectable()
 export class UploadService {
@@ -17,5 +23,16 @@ export class UploadService {
         Body: file,
       }),
     );
+  }
+
+  async download(fileName: string): Promise<Readable> {
+    const command = new GetObjectCommand({
+      Bucket: 'mfb-aws',
+      Key: fileName,
+    });
+
+    const data: GetObjectCommandOutput = await this.s3Client.send(command);
+
+    return data.Body as Readable;
   }
 }
